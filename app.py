@@ -157,7 +157,10 @@ def prediction_ui(gt):
             st.header('Denoised image using lite version of RIDNET model')
             st.markdown('( Size of the model is : `%.3f` MB ) ( Time taken for prediction : `%.3f` seconds )'%(ridnetlite_filesize,(end-start)))
             progress_bar.progress(90)
-            st.image(denoised_image_lite)
+            
+            im=st.image(denoised_image_lite)
+
+            
             st.success('PSNR of denoised image : %.3f db  '%(PSNR(ground_truth,denoised_image_lite)))
             
             progress_bar.progress(100)
@@ -240,7 +243,7 @@ def get_image(gt,noise_level):
   return ground_truth/255.,noisy_image,patches_noisy
 def predict_fun(model,patches_noisy,gt):
 
-  height, width , channels= gt.shape
+  height, width ,channels= gt.shape
   gt=cv2.resize(gt, (width//40*40,height//40*40), interpolation=cv2.INTER_CUBIC)
   denoised_patches=model.predict(patches_noisy)
   denoised_patches=tf.clip_by_value(denoised_patches, clip_value_min=0., clip_value_max=1.)
